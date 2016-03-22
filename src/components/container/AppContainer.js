@@ -1,11 +1,11 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Wrapped from '../App';
-import { receiveTodos } from '../../actions/todo-actions';
+import { tick } from 'actions/yali-actions';
 
 export default connect(
   () => ({}),
   dispatch => bindActionCreators({
-    receiveTodos,
+    tick
   }, dispatch)
   )(Wrapped);

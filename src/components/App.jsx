@@ -1,20 +1,28 @@
 import React from 'react';
-
 import styles from './App.pcss';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
-export default class App extends React.Component {
+class App extends React.Component {
 
   render() {
 
     return (
-      <div className={styles.root}>
-      <h1>
-      <img src={require('../images/trollo.png')} /> Trollo
-      </h1>
+      <section className={styles.root}>
+        <h1>YALI <sup>Beta</sup></h1>
 
-      {this.props.children}
+        {this.props.children}
 
-      </div>
-      );
+      </section>
+    );
+  }
+
+  componentDidMount() {
+    const { tick } = this.props;
+
+    setInterval(tick, 100);
+
   }
 }
+
+export default DragDropContext(HTML5Backend)(App);

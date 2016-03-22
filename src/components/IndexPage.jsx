@@ -1,21 +1,26 @@
 import React from 'react';
-import TodoForm from './TodoForm';
-import TodoLists from './TodoLists';
-import { receiveTodos } from '../actions/todo-actions';
+import Yali from './Yali';
+import Feedables from './Feedables';
 
 class IndexPage extends React.Component {
 
   render() {
 
-    const { saveTodos, addTodo, isChanged, todos, toggleTodo, removeTodo, moveTodo } = this.props;
+    const { yali, consume } = this.props;
 
     return (
       <section>
-      <TodoLists todos={todos} onToggle={toggleTodo} onRemove={removeTodo} onMove={moveTodo} />
 
-      <TodoForm onAdd={addTodo} />
+        <Feedables consume={consume} />
 
-      <button onClick={saveTodos.bind(null, todos)} disabled={!isChanged}>Save</button>
+        <Yali yali={yali} />
+
+        <section>
+          <div>Alcohol: {yali.get('alcohol').toFixed(0)}</div>
+          <div>Fullness: {yali.get('fullness').toFixed(0)}</div>
+          <div>Mood: {yali.get('mood').toFixed(0)}</div>
+        </section>
+
       </section>
       );
   }
