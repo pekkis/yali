@@ -1,15 +1,7 @@
-React broilerplate example project (Trollo)
-============================================
+Yali
+=====
 
-React broilerplate consists stuff that I use and vampirize to start new projects.
-Maintaining it seems to be a full-time job. Thanks, Obama!
-
-This is an example starter project utilizing the stuff I now put in NPM.
-
-Pull requests are accepted. If you vampirize this, vampirize something back
-please! :D
-
-Use as you wish, but still read the license from LICENSE.
+Kurppa's dream project.
 
 Requirements
 -------------
