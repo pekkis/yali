@@ -9,7 +9,6 @@ class App extends React.Component {
 
     return (
       <section className={styles.root}>
-        <h1>YALI <sup>Beta</sup></h1>
 
         {this.props.children}
 

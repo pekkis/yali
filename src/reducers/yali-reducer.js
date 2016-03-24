@@ -1,5 +1,5 @@
 import { List, Map } from 'immutable';
-import { calculateMood, consume } from 'services/yali';
+import { calculateMood } from 'services/yali';
 
 import {
   TICK,
@@ -17,15 +17,15 @@ export default function (state = defaultState, action) {
     case TICK:
       return state
         .update('fullness', f => {
-          return (f <= 0) ? 0 : f - .25;
+          return (f <= 0) ? 0 : f - .1;
         })
         .update('alcohol', a => {
-          return (a <= 0) ? 0 : a - .50;
+          return (a <= 0) ? 0 : a - .25;
         })
         .update(state => state.set('mood', calculateMood(state)));
 
     case CONSUME:
-      return consume(state, action.payload)
+      return action.payload.consume(state)
         .update(state => state.set('mood', calculateMood(state)));
     default:
       return state;

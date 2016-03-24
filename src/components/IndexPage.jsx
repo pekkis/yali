@@ -1,28 +1,37 @@
 import React from 'react';
+import Consumables from './Consumables';
 import Yali from './Yali';
-import Feedables from './Feedables';
+import Menu from './Menu';
+import styles from './IndexPage.pcss';
+import Stats from './Stats';
+import Chat from './Chat';
 
 class IndexPage extends React.Component {
 
   render() {
 
-    const { yali, consume } = this.props;
+    const { yali, consume, sendMessage, messages } = this.props;
 
     return (
-      <section>
+      <div className={styles.root}>
 
-        <Feedables consume={consume} />
+        <div className={styles.menu}>
+          <Menu yali={yali} consume={consume} />
+        </div>
 
-        <Yali yali={yali} />
+        <div className={styles.yali}>
 
-        <section>
-          <div>Alcohol: {yali.get('alcohol').toFixed(0)}</div>
-          <div>Fullness: {yali.get('fullness').toFixed(0)}</div>
-          <div>Mood: {yali.get('mood').toFixed(0)}</div>
-        </section>
+          <Stats yali={yali} />
 
-      </section>
-      );
+          <Yali yali={yali} />
+        </div>
+
+        <div className={styles.chat}>
+          <Chat messages={messages} sendMessage={sendMessage} />
+        </div>
+
+      </div>
+    );
   }
 };
 

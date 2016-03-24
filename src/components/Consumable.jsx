@@ -1,15 +1,11 @@
 import React from 'react';
 import { ItemTypes } from 'constants';
 import { DragSource } from 'react-dnd';
-import styles from './Feedable.pcss';
+import styles from './Consumable.pcss';
 import cx from 'classnames';
 
-function Feedable(props) {
-
-  const { src, text, isDragging, connectDragSource } = props;
-
-  console.log(isDragging, 'id');
-
+function Consumable(props) {
+  const { consumable, isDragging, connectDragSource } = props;
   const classes = cx(
     styles.root,
     {
@@ -19,7 +15,14 @@ function Feedable(props) {
 
   return connectDragSource(
     <div className={styles.root}>
-      <img src={src} /> {text}
+      <div>
+        <img src={consumable.src} />
+      </div>
+
+      <div>
+        {consumable.text}
+      </div>
+
     </div>
   );
 }
@@ -33,7 +36,7 @@ export default DragSource(
       };
     },
     endDrag(props) {
-      props.consume(props.type);
+      props.consume(props.consumable);
     }
   },
   (connect, monitor) => {
@@ -42,4 +45,4 @@ export default DragSource(
       isDragging: monitor.isDragging()
     }
   }
-)(Feedable);
+)(Consumable);
