@@ -1,7 +1,7 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Wrapped from '../App';
-import { tick } from 'actions/yali-actions';
+import { tick } from 'ducks/yali';
 
 export default connect(
   () => ({}),

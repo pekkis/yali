@@ -1,16 +1,22 @@
 import { List, Map } from 'immutable';
 import r from 'services/r';
-
-import {
-  SEND_MESSAGE,
-} from '../actions/chat-actions';
-
 import {
   TICK,
   CONSUME
-} from '../actions/yali-actions';
-
+} from './yali';
 import { getConsumationMessage, getLatteus } from 'services/yali';
+
+export const SEND_MESSAGE = 'SEND_MESSAGE';
+
+export function sendMessage(sender, message) {
+  return {
+    type: SEND_MESSAGE,
+    payload: {
+      sender,
+      message,
+    },
+  };
+}
 
 const defaultState = Map({
   messages: List.of({

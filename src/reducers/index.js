@@ -1,2 +1,2 @@
-export { default as yali } from './yali-reducer';
-export { default as chat } from './chat-reducer';
+export { default as yali } from '../ducks/yali';
+export { default as chat } from '../ducks/chat';

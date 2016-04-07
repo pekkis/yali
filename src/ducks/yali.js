@@ -1,10 +1,21 @@
 import { List, Map } from 'immutable';
 import { calculateMood } from 'services/yali';
 
-import {
-  TICK,
-  CONSUME
-} from '../actions/yali-actions';
+export const TICK = 'TICK';
+export const CONSUME = 'CONSUME';
+
+export function tick() {
+  return {
+    type: TICK,
+  };
+}
+
+export function consume(consumable) {
+  return {
+    type: CONSUME,
+    payload: consumable,
+  };
+}
 
 const defaultState = Map({
   alcohol: 90,
