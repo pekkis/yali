@@ -1,3 +1,3 @@
 export const ItemTypes = {
-  CONSUMABLE: 'consumable'
+  CONSUMABLE: 'consumable',
 };

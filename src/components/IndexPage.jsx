@@ -1,5 +1,4 @@
 import React from 'react';
-import Consumables from './Consumables';
 import Yali from './Yali';
 import Menu from './Menu';
 import styles from './IndexPage.pcss';
@@ -7,11 +6,8 @@ import Stats from './Stats';
 import Chat from './Chat';
 
 class IndexPage extends React.Component {
-
   render() {
-
     const { yali, consume, sendMessage, messages } = this.props;
-
     return (
       <div className={styles.root}>
 

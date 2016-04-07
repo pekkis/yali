@@ -4,23 +4,17 @@ import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
 class App extends React.Component {
-
   render() {
-
     return (
       <section className={styles.root}>
-
         {this.props.children}
-
       </section>
     );
   }
 
   componentDidMount() {
     const { tick } = this.props;
-
     setInterval(tick, 100);
-
   }
 }
 

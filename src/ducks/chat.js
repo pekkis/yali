@@ -2,7 +2,7 @@ import { List, Map } from 'immutable';
 import r from 'services/r';
 import {
   TICK,
-  CONSUME
+  CONSUME,
 } from './yali';
 import { getConsumationMessage, getLatteus } from 'services/yali';
 
@@ -27,7 +27,6 @@ const defaultState = Map({
 
 export default function (state = defaultState, action) {
   switch (action.type) {
-
     case SEND_MESSAGE:
       return state.update('messages', messages => messages.concat(action.payload));
 
@@ -39,7 +38,7 @@ export default function (state = defaultState, action) {
       return state.update('messages', m => m.concat(msg).takeLast(10));
     }
 
-    case TICK:
+    case TICK: {
       const rand = r.integer(0, 1000);
       if (rand > 10) {
         return state;
@@ -49,7 +48,7 @@ export default function (state = defaultState, action) {
         message: getLatteus(),
       };
       return state.update('messages', m => m.concat(msg).takeLast(10));
-
+    }
     default:
       return state;
   }

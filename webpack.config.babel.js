@@ -1,13 +1,11 @@
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'path';
-import Webpack_isomorphic_tools_plugin from 'webpack-isomorphic-tools/plugin';
+import WebpackIsomorphicToolsPlugin from 'webpack-isomorphic-tools/plugin';
 import merge from 'merge';
 import autoprefixer from 'autoprefixer';
 import precss from 'precss';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import pkg from './package.json';
-import clientConf from './config.client';
 import { getStyleLoader } from '@dr-kobros/react-broilerplate/lib/webpack';
 import isomorphicConfig from './webpack-isomorphic.js';
 
@@ -16,16 +14,15 @@ const PATHS = {
   src: path.resolve('./src'),
   build: path.resolve('./dist'),
   modules: path.resolve('./node_modules'),
-  test: path.resolve('./test')
+  test: path.resolve('./test'),
 };
 
-
-let webpack_isomorphic_tools_plugin;
-webpack_isomorphic_tools_plugin = new Webpack_isomorphic_tools_plugin(
+let webpackIsomorphicToolsPlugin;
+webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(
     isomorphicConfig
 );
 if (ENV === 'development') {
-  webpack_isomorphic_tools_plugin = webpack_isomorphic_tools_plugin.development();
+  webpackIsomorphicToolsPlugin = webpackIsomorphicToolsPlugin.development();
 }
 
 const common = {
@@ -39,111 +36,110 @@ const common = {
         loader: 'babel-loader',
         exclude: [
           PATHS.modules,
-        ]
+        ],
       },
       getStyleLoader(
-                ENV,
+        ENV,
         {
           test: /\.p?css$/,
           include: [
-              PATHS.src,
-            ]
+            PATHS.src,
+          ],
         },
         [
           'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
-          'postcss-loader'
+          'postcss-loader',
         ]
-            ),
+      ),
       getStyleLoader(
-                ENV,
+        ENV,
         {
           test: /\.css$/,
           include: [
-              PATHS.modules,
-            ]
+            PATHS.modules,
+          ],
         },
         [
-          'css-loader'
+          'css-loader',
         ]
-            ),
+      ),
       {
-        test: webpack_isomorphic_tools_plugin.regular_expression('images'),
+        test: webpackIsomorphicToolsPlugin.regular_expression('images'),
         loaders: [
           'file?hash=sha512&digest=hex&name=assets/images/[hash:base58:8].[ext]',
-          'img?minimize&optimizationLevel=5&progressive=true'
+          'img?minimize&optimizationLevel=5&progressive=true',
         ],
         include: [
-          PATHS.src
-        ]
+          PATHS.src,
+        ],
       },
       {
         test: /\.(woff|woff2|eot|ttf)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'url-loader?limit=10000&mimetype=application/font-woff&name=assets/fonts/[name].[ext]',
+        loader: 'url-loader?limit=10000&mimetype=application/font-woff' +
+          '&name=assets/fonts/[name].[ext]',
         include: [
           PATHS.src,
-          PATHS.modules
-        ]
+          PATHS.modules,
+        ],
       },
       {
         test: /\.(svg)(\?v=[0-9]\.[0-9]\.[0-9])$/,
         loader: 'file-loader?name=assets/fonts/[name].[ext]',
         include: [
           PATHS.src,
-          PATHS.modules
-        ]
-      }
-    ]
+          PATHS.modules,
+        ],
+      },
+    ],
   },
-  postcss: function () {
-    return [autoprefixer, precss];
-  },
+  postcss: () => [autoprefixer, precss],
   resolve: {
     modulesDirectories: ['node_modules'],
     root: [
       PATHS.src,
     ],
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx'],
   },
   resolveLoader: {
-    root: PATHS.modules
-  }
+    root: PATHS.modules,
+  },
 };
 
 const plugins = [
-  webpack_isomorphic_tools_plugin,
+  webpackIsomorphicToolsPlugin,
   new webpack.optimize.OccurenceOrderPlugin(),
   new HtmlWebpackPlugin({
     title: 'JavaScript SchamaScript',
     template: 'web/index.html',
     favicon: 'web/favicon.ico',
-    inject: 'body'
+    inject: 'body',
   }),
   new webpack.DefinePlugin({
     __DEVELOPMENT__: process.env.NODE_ENV === 'development',
-    __DEVTOOLS__: false
-  })
+    __DEVTOOLS__: false,
+  }),
 ];
 
 const envs = {
 
   test: {
-    devtool: 'inline-source-map' // just do inline source maps instead of the default
+    devtool: 'inline-source-map',
   },
 
   development: {
     devtool: 'cheap-module-source-map',
     entry: [
       'webpack-hot-middleware/client',
-      './src/client.jsx'
+      './src/client.jsx',
     ],
     output: {
       path: path.join(__dirname, 'dist'),
       publicPath: '/',
-      filename: 'client.[hash].js'
+      filename: 'client.[hash].js',
     },
     plugins: plugins.concat([
       new webpack.HotModuleReplacementPlugin(),
-    ])
+    ]),
   },
   prod: {
     devtool: 'source-map',
@@ -154,26 +150,26 @@ const envs = {
     output: {
       path: path.join(__dirname, 'dist'),
       publicPath: '/',
-      filename: '[name].[chunkhash].js'
+      filename: '[name].[chunkhash].js',
     },
     plugins: plugins.concat([
       new ExtractTextPlugin('styles.[contenthash].css'),
       new webpack.optimize.UglifyJsPlugin({
-        'mangle': false,
-        'compress': {
-                    /* eslint-disable camelcase */
-            dead_code: true,  // discard unreachable code
-            unsafe: false, // some unsafe optimizations (see below)
-            unused: false, // drop unused variables/functions
-            hoist_vars: false, // hoist variable declarations
-            side_effects: false, // drop side-effect-free statements
-            global_defs: {} // glob
-                    /* eslint-enable camelcase */
-          }
+        mangle: false,
+        compress: {
+          /* eslint-disable camelcase */
+          dead_code: true,  // discard unreachable code
+          unsafe: false, // some unsafe optimizations (see below)
+          unused: false, // drop unused variables/functions
+          hoist_vars: false, // hoist variable declarations
+          side_effects: false, // drop side-effect-free statements
+          global_defs: {}, // glob
+          /* eslint-enable camelcase */
+        },
       }),
-      new webpack.NoErrorsPlugin()
-    ])
-  }
+      new webpack.NoErrorsPlugin(),
+    ]),
+  },
 };
 
 export default merge(common, envs[ENV]);
