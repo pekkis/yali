@@ -7,7 +7,7 @@
     "clean": "rimraf ./dist",
     "build:webpack": "NODE_ENV=prod webpack",
     "build": "npm run clean && npm run build:webpack",
-    "lint": "eslint src --ext js --ext jsx",
+    "lint": "eslint --ext js --ext jsx .",
     "babel-node": "babel-node",
     "start": "NODE_ENV=development nodemon --exec npm run babel-node -w src/server.js -- src/server.js",
     "test": "ava -v"

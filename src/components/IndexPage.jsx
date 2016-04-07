@@ -33,7 +33,7 @@ class IndexPage extends React.Component {
       </div>
     );
   }
-};
+}
 
 /*
 IndexPage.fetch = ({dispatch}) => {

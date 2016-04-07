@@ -32,7 +32,7 @@ const getMood = mood => {
 };
 
 
-export default function Mouth({mood}) {
+export default function Mouth({ mood }) {
 
   const theMood = getMood(mood);
 

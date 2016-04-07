@@ -11,7 +11,7 @@ function Consumable(props) {
     {
       [styles.isDragging]: isDragging
     }
-  )
+  );
 
   return connectDragSource(
     <div className={styles.root}>
@@ -43,6 +43,6 @@ export default DragSource(
     return {
       connectDragSource: connect.dragSource(),
       isDragging: monitor.isDragging()
-    }
+    };
   }
 )(Consumable);

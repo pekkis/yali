@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './ChatMessages.pcss';
 import ChatMessage from './ChatMessage';
 
-export default function ChatMessages({message}) {
+export default function ChatMessages({ message }) {
 
   return (
     <div className={styles.root}>

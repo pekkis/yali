@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Menu.pcss';
 import Consumables from './Consumables';
 
-export default function Menu({consume}) {
+export default function Menu({ consume }) {
 
 
   return (

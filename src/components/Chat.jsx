@@ -8,7 +8,7 @@ export default function Chat({ yali, sendMessage, messages }) {
       <h2>Latteudet</h2>
       <ChatMessages messages={messages} />
     </div>
-  )
+  );
 }
 
 Chat.propTypes = {

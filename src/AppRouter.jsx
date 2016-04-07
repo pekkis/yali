@@ -11,7 +11,7 @@ export default function AppRouter({ store, history }) {
   const { prefetcher } = createFetchers(store);
   function initApp(nextState, replaceState, callback) {
     // store.dispatch(receiveTodos()).then(() => {
-      callback();
+    callback();
     // });
   }
 
