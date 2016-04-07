@@ -34,65 +34,65 @@ const common = {
 
   module: {
     loaders: [
+      {
+        test: /\.jsx?$/,
+        loader: 'babel-loader',
+        exclude: [
+          PATHS.modules,
+        ]
+      },
+      getStyleLoader(
+                ENV,
         {
-          test: /\.jsx?$/,
-          loader: 'babel-loader',
-          exclude: [
+          test: /\.p?css$/,
+          include: [
+              PATHS.src,
+            ]
+        },
+        [
+          'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
+          'postcss-loader'
+        ]
+            ),
+      getStyleLoader(
+                ENV,
+        {
+          test: /\.css$/,
+          include: [
               PATHS.modules,
             ]
         },
-        getStyleLoader(
-                ENV,
-            {
-              test: /\.p?css$/,
-              include: [
-                  PATHS.src,
-                ]
-            },
-            [
-              'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
-              'postcss-loader'
-            ]
+        [
+          'css-loader'
+        ]
             ),
-        getStyleLoader(
-                ENV,
-            {
-              test: /\.css$/,
-              include: [
-                  PATHS.modules,
-                ]
-            },
-            [
-              'css-loader'
-            ]
-            ),
-        {
-          test: webpack_isomorphic_tools_plugin.regular_expression('images'),
-          loaders: [
-              'file?hash=sha512&digest=hex&name=assets/images/[hash:base58:8].[ext]',
-              'img?minimize&optimizationLevel=5&progressive=true'
-            ],
-          include: [
-              PATHS.src
-            ]
-        },
-        {
-          test: /\.(woff|woff2|eot|ttf)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          loader: 'url-loader?limit=10000&mimetype=application/font-woff&name=assets/fonts/[name].[ext]',
-          include: [
-              PATHS.src,
-              PATHS.modules
-            ]
-        },
-        {
-          test: /\.(svg)(\?v=[0-9]\.[0-9]\.[0-9])$/,
-          loader: 'file-loader?name=assets/fonts/[name].[ext]',
-          include: [
-              PATHS.src,
-              PATHS.modules
-            ]
-        }
-      ]
+      {
+        test: webpack_isomorphic_tools_plugin.regular_expression('images'),
+        loaders: [
+          'file?hash=sha512&digest=hex&name=assets/images/[hash:base58:8].[ext]',
+          'img?minimize&optimizationLevel=5&progressive=true'
+        ],
+        include: [
+          PATHS.src
+        ]
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'url-loader?limit=10000&mimetype=application/font-woff&name=assets/fonts/[name].[ext]',
+        include: [
+          PATHS.src,
+          PATHS.modules
+        ]
+      },
+      {
+        test: /\.(svg)(\?v=[0-9]\.[0-9]\.[0-9])$/,
+        loader: 'file-loader?name=assets/fonts/[name].[ext]',
+        include: [
+          PATHS.src,
+          PATHS.modules
+        ]
+      }
+    ]
   },
   postcss: function () {
     return [autoprefixer, precss];
@@ -100,8 +100,8 @@ const common = {
   resolve: {
     modulesDirectories: ['node_modules'],
     root: [
-        PATHS.src,
-      ],
+      PATHS.src,
+    ],
     extensions: ['', '.js', '.jsx']
   },
   resolveLoader: {
@@ -133,46 +133,46 @@ const envs = {
   development: {
     devtool: 'cheap-module-source-map',
     entry: [
-        'webpack-hot-middleware/client',
-        './src/client.jsx'
-      ],
+      'webpack-hot-middleware/client',
+      './src/client.jsx'
+    ],
     output: {
-        path: path.join(__dirname, 'dist'),
-        publicPath: '/',
-        filename: 'client.[hash].js'
-      },
+      path: path.join(__dirname, 'dist'),
+      publicPath: '/',
+      filename: 'client.[hash].js'
+    },
     plugins: plugins.concat([
-        new webpack.HotModuleReplacementPlugin(),
-      ])
+      new webpack.HotModuleReplacementPlugin(),
+    ])
   },
   prod: {
     devtool: 'source-map',
     entry: {
-        client: './src/client.jsx',
-      },
+      client: './src/client.jsx',
+    },
 
     output: {
-        path: path.join(__dirname, 'dist'),
-        publicPath: '/',
-        filename: '[name].[chunkhash].js'
-      },
+      path: path.join(__dirname, 'dist'),
+      publicPath: '/',
+      filename: '[name].[chunkhash].js'
+    },
     plugins: plugins.concat([
-        new ExtractTextPlugin('styles.[contenthash].css'),
-        new webpack.optimize.UglifyJsPlugin({
-            'mangle': false,
-            'compress': {
+      new ExtractTextPlugin('styles.[contenthash].css'),
+      new webpack.optimize.UglifyJsPlugin({
+        'mangle': false,
+        'compress': {
                     /* eslint-disable camelcase */
-                dead_code: true,  // discard unreachable code
-                unsafe: false, // some unsafe optimizations (see below)
-                unused: false, // drop unused variables/functions
-                hoist_vars: false, // hoist variable declarations
-                side_effects: false, // drop side-effect-free statements
-                global_defs: {} // glob
+            dead_code: true,  // discard unreachable code
+            unsafe: false, // some unsafe optimizations (see below)
+            unused: false, // drop unused variables/functions
+            hoist_vars: false, // hoist variable declarations
+            side_effects: false, // drop side-effect-free statements
+            global_defs: {} // glob
                     /* eslint-enable camelcase */
-              }
-          }),
-        new webpack.NoErrorsPlugin()
-      ])
+          }
+      }),
+      new webpack.NoErrorsPlugin()
+    ])
   }
 };
 
