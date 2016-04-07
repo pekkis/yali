@@ -38,5 +38,5 @@ export default function Mouth({ mood }) {
 }
 
 Mouth.propTypes = {
-  mood: React.propTypes.string.isRequired,
+  mood: React.PropTypes.string.isRequired,
 };
