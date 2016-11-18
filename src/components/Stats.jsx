@@ -4,9 +4,9 @@ import styles from './Stats.pcss';
 export default function Stats({ yali }) {
   return (
     <div className={styles.root}>
-      <div>Alkoholi: {yali.get('alcohol').toFixed(0)}</div>
-      <div>Massu: {yali.get('fullness').toFixed(0)}</div>
-      <div>Mieliala: {yali.get('mood').toFixed(0)}</div>
+      <div>Jano: {yali.get('alcohol').toFixed(0)}</div>
+      <div>Nälkä: {yali.get('fullness').toFixed(0)}</div>
+      <div>Onni: {yali.get('mood').toFixed(0)}</div>
     </div>
   );
 }

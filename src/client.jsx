@@ -14,8 +14,24 @@ const router = (
 
 const app = createApp(store, history, router);
 
-ReactDOM.render(
-    app,
-    document.getElementById('app')
-);
+let tussi = setInterval(() => {
 
+  if (!window.speechSynthesis) {
+    clearInterval(tussi);
+    ReactDOM.render(
+        app,
+        document.getElementById('app')
+    );
+    return;
+  }
+
+  const voices = window.speechSynthesis.getVoices();
+  if (voices.length) {
+    clearInterval(tussi);
+    ReactDOM.render(
+        app,
+        document.getElementById('app')
+    );
+  }
+
+}, 1000);

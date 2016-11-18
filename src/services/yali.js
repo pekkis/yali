@@ -32,15 +32,8 @@ export function getConsumationMessage(consumable) {
 
 export function getLatteus() {
   const latteus = [
-    'On vain kaksi tukkaa: sotilaan tukka ja huoran tukka.',
-    'Tämä koko roskahan vuotaa kuin rakkovaivainen marsu!',
-    'Mitähän Olli-Pekkakin tähän oikein sanoisi?',
-    'Jos olisi Bägy arvannut millaisia kiinapelejä' +
-      ' sitä tehdään vuonna 2016, niin olisi voinut vaikka pelästyä',
-    'Oletko koskaan kuullut valon hitaudesta?',
-    'Kuule jos tietäisit kenen mukaan sain nimen Yali niin sinua pelottaisi!',
-    'Tällaista koodausta ei Kikolon kursseilla opetettukaan',
-    'Jos vielä Paksun Pojan tekemät graffat tähän saisi...',
+    'Saisipa jotain lipaistavaa!',
+    'Saisipa jotain lussutettavaa!',
   ];
 
   return r.pick(latteus);

@@ -21,7 +21,7 @@ export function sendMessage(sender, message) {
 const defaultState = Map({
   messages: List.of({
     sender: 'Yali',
-    message: 'Moi mä oon Yali!',
+    message: 'Moi mä oon Jali!',
   }),
 });
 
@@ -40,9 +40,11 @@ export default function (state = defaultState, action) {
 
     case TICK: {
       const rand = r.integer(0, 1000);
-      if (rand > 10) {
+      if (rand > 3) {
         return state;
       }
+
+
       const msg = {
         sender: 'Yali',
         message: getLatteus(),

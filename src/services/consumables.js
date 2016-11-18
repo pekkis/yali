@@ -2,13 +2,33 @@ import { Map } from 'immutable';
 
 const consumables = Map({
   beer: {
-    src: require('images/beer.png'),
-    type: 'beer',
-    text: 'Olut',
+    src: require('images/limu.png'),
+    type: 'limu',
+    text: 'Limu',
     consume: yali => (
       yali
         .update('fullness', f => f + 1)
         .update('alcohol', a => a + 10)
+    ),
+  },
+  maito: {
+    src: require('images/maito.png'),
+    type: 'maito',
+    text: 'Maito',
+    consume: yali => (
+      yali
+        .update('fullness', f => f + 50)
+        .update('alcohol', a => a + 50)
+    ),
+  },
+  keksi: {
+    src: require('images/keksi.png'),
+    type: 'keksi',
+    text: 'Keksula',
+    consume: yali => (
+      yali
+        .update('fullness', f => f - 200)
+        .update('alcohol', a => a - 200)
     ),
   },
   chickenleg: {
@@ -27,10 +47,10 @@ const consumables = Map({
       yali.update('fullness', f => f + 33)
     ),
   },
-  quorn: {
-    src: require('images/quorn.png'),
-    type: 'quorn',
-    text: 'Quorn',
+  ohrapuuro: {
+    src: require('images/ohrapuuro.png'),
+    type: 'ohrapuuro',
+    text: 'Ohrapuuro',
     consume: yali => (
       yali.update('fullness', f => f - 25)
     ),
