@@ -1,41 +1,40 @@
-import { List, Map } from 'immutable';
-import r from 'services/r';
-import {
-  TICK,
-  CONSUME,
-} from './yali';
-import { getConsumationMessage, getLatteus } from 'services/yali';
+import { List, Map } from "immutable";
+import r from "services/r";
+import { TICK, CONSUME } from "./yali";
+import { getConsumationMessage, getLatteus } from "services/yali";
+import parlayService from "../services/parlay";
 
-export const SEND_MESSAGE = 'SEND_MESSAGE';
+export const SEND_MESSAGE = "SEND_MESSAGE";
 
 export function sendMessage(sender, message) {
   return {
     type: SEND_MESSAGE,
     payload: {
       sender,
-      message,
-    },
+      message
+    }
   };
 }
 
 const defaultState = Map({
-  messages: List.of({
-    sender: 'Yali',
-    message: 'Moi mä oon Jali!',
-  }),
+  messages: List()
 });
 
-export default function (state = defaultState, action) {
+export default function(state = defaultState, action) {
   switch (action.type) {
     case SEND_MESSAGE:
-      return state.update('messages', messages => messages.concat(action.payload));
+      parlayService.speak(action.payload.message);
+      return state.update("messages", messages =>
+        messages.concat(action.payload)
+      );
 
     case CONSUME: {
       const msg = {
-        sender: 'Yali',
-        message: getConsumationMessage(action.payload),
+        sender: "Yali",
+        message: getConsumationMessage(action.payload)
       };
-      return state.update('messages', m => m.concat(msg).takeLast(10));
+      parlayService.speak(msg.message);
+      return state.update("messages", m => m.concat(msg).takeLast(10));
     }
 
     case TICK: {
@@ -44,12 +43,12 @@ export default function (state = defaultState, action) {
         return state;
       }
 
-
       const msg = {
-        sender: 'Yali',
-        message: getLatteus(),
+        sender: "Yali",
+        message: getLatteus()
       };
-      return state.update('messages', m => m.concat(msg).takeLast(10));
+      parlayService.speak(msg.message);
+      return state.update("messages", m => m.concat(msg).takeLast(10));
     }
     default:
       return state;

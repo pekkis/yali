@@ -1,50 +1,54 @@
-import uuid from 'node-uuid';
-import { createServer } from '@dr-kobros/react-broilerplate-server-express/lib/server';
-import config from '../config.server';
-import webpackConfig from '../webpack.config.babel';
-import bodyParser from 'body-parser';
-import { List } from 'immutable';
+import { getScripts, getStyles } from "@dr-kobros/broilerplate/lib/serverUtils";
+import template from "./config/template";
+import { createStore } from "./utils/redux";
+import { getMiddlewares, getReducers, getEnhancers } from "./config/redux";
+import { getInitialState } from "./config/state";
 
-createServer(config, webpackConfig, (app) => {
-  app.use(bodyParser.json());
-  let todos = List.of(
-    {
-      id: uuid.v4(),
-      text: 'Get 100 litres of battery acid',
-      category: 0,
-    },
-    {
-      id: uuid.v4(),
-      text: 'Get gardening tools',
-      category: 0,
-    },
-    {
-      id: uuid.v4(),
-      text: 'Carve up the "meat"',
-      category: 0,
-    },
-    {
-      id: uuid.v4(),
-      text: 'Liquidate the pieces',
-      category: 0,
-    },
-    {
-      id: uuid.v4(),
-      text: 'Dump the acid in the Danube',
-      category: 1,
-    }
-  );
+import ReactDOMServer from "react-dom/server";
+import ServerRoot from "./ServerRoot";
+import React from "react";
+import { ServerStyleSheet } from "styled-components";
+import transit from "transit-immutable-js";
 
-  app.get('/api/todo', (req, res) => {
-    setTimeout(
-      () => res.send(todos.toJS()),
-      Math.random() * 300
+import { getPersons } from "./ducks/person";
+
+const respond = stats => {
+  const chunks = ["meta", "vendor", "client"];
+  const scripts = getScripts(stats, chunks);
+  const styles = getStyles(stats, chunks);
+
+  return async (req, res, next) => {
+    const initialState = getInitialState();
+    const store = createStore(
+      getReducers(),
+      getMiddlewares(),
+      getEnhancers(),
+      initialState
     );
-  });
 
-  app.post('/api/todo', (req, res) => {
-    todos = List(req.body);
-    res.send(['ok']);
-  });
-});
+    const context = {};
 
+    await store.dispatch(getPersons());
+
+    const sheet = new ServerStyleSheet();
+
+    const html = ReactDOMServer.renderToString(
+      sheet.collectStyles(
+        <ServerRoot context={context} location={req.path} store={store} />
+      )
+    );
+
+    const tpl = template(
+      html,
+      scripts,
+      styles,
+      sheet.getStyleTags(),
+      transit.toJSON(store.getState())
+    );
+
+    // use context
+    res.send(tpl);
+  };
+};
+
+export default respond;

@@ -1,13 +1,14 @@
-import React from 'react';
-import styles from './App.pcss';
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import React from "react";
+import styles from "./App.pcss";
+import { DragDropContext } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
+import IndexPage from "./containers/IndexPageContainer";
 
 class App extends React.Component {
   render() {
     return (
       <section className={styles.root}>
-        {this.props.children}
+        <IndexPage />
       </section>
     );
   }

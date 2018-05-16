@@ -1,17 +1,14 @@
-import React from 'react';
-import { ItemTypes } from 'constants';
-import { DragSource } from 'react-dnd';
-import styles from './Consumable.pcss';
-import cx from 'classnames';
+import React from "react";
+import { ItemTypes } from "../constants";
+import { DragSource } from "react-dnd";
+import styles from "./Consumable.pcss";
+import cx from "classnames";
 
 function Consumable(props) {
   const { consumable, isDragging, connectDragSource } = props;
-  const classes = cx(
-    styles.root,
-    {
-      [styles.isDragging]: isDragging
-    }
-  );
+  const classes = cx(styles.root, {
+    [styles.isDragging]: isDragging
+  });
 
   return connectDragSource(
     <div className={styles.root}>
@@ -19,10 +16,7 @@ function Consumable(props) {
         <img src={consumable.src} />
       </div>
 
-      <div>
-        {consumable.text}
-      </div>
-
+      <div>{consumable.text}</div>
     </div>
   );
 }

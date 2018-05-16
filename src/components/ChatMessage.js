@@ -1,9 +1,9 @@
-import React from 'react';
-import styles from './ChatMessage.pcss';
-import { List } from 'immutable';
+import React from "react";
+import styles from "./ChatMessage.pcss";
+import { List } from "immutable";
+import PropTypes from "prop-types";
 
-class ChatMessage extends React.Component {
-
+class ChatMessage extends React.PureComponent {
   render() {
     const { message } = this.props;
     return (
@@ -12,22 +12,10 @@ class ChatMessage extends React.Component {
       </div>
     );
   }
-
-  componentDidMount() {
-    const { message } = this.props;
-
-    if (window.speechSynthesis) {
-      var msg = new SpeechSynthesisUtterance(message.message);
-      var voices = List(window.speechSynthesis.getVoices());
-      msg.voice = voices.find(v => v.lang === 'fi-FI');
-      msg.pitch = 0;
-      window.speechSynthesis.speak(msg);      
-    }
-  }
 }
 
 ChatMessage.propTypes = {
-  message: React.PropTypes.object.isRequired,
+  message: PropTypes.object.isRequired
 };
 
 export default ChatMessage;

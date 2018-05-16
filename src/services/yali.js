@@ -1,39 +1,52 @@
-import r from './r';
+import r from "./r";
 
 export const ITEM_TYPES = {
-  CONSUMABLE: 'consumable',
+  CONSUMABLE: "consumable"
 };
 
 export function calculateMood(yali) {
-  const alcohol = yali.get('alcohol');
-  const fullness = yali.get('fullness');
+  const alcohol = yali.get("alcohol");
+  const fullness = yali.get("fullness");
   return -100 + alcohol + fullness;
 }
 
 export function getConsumationMessage(consumable) {
-  const adjectives = [
-    'maukas',
-    'noheva',
-    'mehevä',
-    'herkullinen',
-    'mahtava',
-    'losokka',
-    'ihana',
-    'oksettava',
-    'kauhea',
-    'karmaiseva',
-    'inha',
-    'vinha',
-    'lussuteltava',
-  ];
+  const adjectives = {
+    positive: [
+      "maukas",
+      "noheva",
+      "mehevä",
+      "herkullinen",
+      "mahtava",
+      "losokka",
+      "ihana",
+      "vinha",
+      "lussuteltava",
+      "hyvänmakuinen",
+      "aromikas"
+    ],
+    negative: [
+      "oksettava",
+      "kauhea",
+      "karmaiseva",
+      "inha",
+      "pahanmakuinen",
+      "hirveä"
+    ]
+  };
 
-  return `Olipas ${r.pick(adjectives)} ${consumable.text.toLowerCase()}!`;
+  const list = consumable.positive ? adjectives.positive : adjectives.negative;
+
+  return `Olipas ${r.pick(list)} ${consumable.text.toLowerCase()}!`;
 }
 
 export function getLatteus() {
   const latteus = [
-    'Saisipa jotain lipaistavaa!',
-    'Saisipa jotain lussutettavaa!',
+    "Saisipa jotain lipaistavaa!",
+    "Saisipa jotain lussutettavaa!",
+    "Olisipa jotain konsumoitavaa",
+    "Voi jospa olisi jotain maksimoitavaa!",
+    "Herkku kyllä maistuisi!"
   ];
 
   return r.pick(latteus);
