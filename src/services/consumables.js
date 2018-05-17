@@ -9,6 +9,14 @@ const consumables = Map({
     consume: yali =>
       yali.update("fullness", f => f + 1).update("alcohol", a => a + 10)
   },
+  poop: {
+    src: require("../assets/images/poop.png"),
+    type: "puuppa",
+    text: "Puuppa",
+    positive: true,
+    consume: yali =>
+      yali.update("fullness", f => f + 100).update("alcohol", a => a + 30)
+  },
   maito: {
     src: require("../assets/images/maito.png"),
     type: "maito",
