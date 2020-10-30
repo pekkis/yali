@@ -1,7 +1,7 @@
 import { List, Map } from "immutable";
-import r from "services/r";
+import r from "../services/r";
 import { TICK, CONSUME } from "./yali";
-import { getConsumationMessage, getLatteus } from "services/yali";
+import { getConsumationMessage, getLatteus } from "../services/yali";
 import parlayService from "../services/parlay";
 
 export const SEND_MESSAGE = "SEND_MESSAGE";
@@ -11,30 +11,30 @@ export function sendMessage(sender, message) {
     type: SEND_MESSAGE,
     payload: {
       sender,
-      message
-    }
+      message,
+    },
   };
 }
 
 const defaultState = Map({
-  messages: List()
+  messages: List(),
 });
 
-export default function(state = defaultState, action) {
+export default function chatReducer(state = defaultState, action) {
   switch (action.type) {
     case SEND_MESSAGE:
       parlayService.speak(action.payload.message);
-      return state.update("messages", messages =>
+      return state.update("messages", (messages) =>
         messages.concat(action.payload)
       );
 
     case CONSUME: {
       const msg = {
         sender: "Yali",
-        message: getConsumationMessage(action.payload)
+        message: getConsumationMessage(action.payload),
       };
       parlayService.speak(msg.message);
-      return state.update("messages", m => m.concat(msg).takeLast(10));
+      return state.update("messages", (m) => m.concat(msg).takeLast(10));
     }
 
     case TICK: {
@@ -45,10 +45,10 @@ export default function(state = defaultState, action) {
 
       const msg = {
         sender: "Yali",
-        message: getLatteus()
+        message: getLatteus(),
       };
       parlayService.speak(msg.message);
-      return state.update("messages", m => m.concat(msg).takeLast(10));
+      return state.update("messages", (m) => m.concat(msg).takeLast(10));
     }
     default:
       return state;

@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Yali.pcss";
+import styles from "./Yali.module.pcss";
 import Mouth from "./yali/Mouth";
 import yaliBg from "../assets/images/yali.png";
 import { ItemTypes } from "../constants";
@@ -21,15 +21,15 @@ export default DropTarget(
   {
     drop(props, xuu, xoo) {
       return {
-        consumed: true
+        consumed: true,
       };
-    }
+    },
   },
   (connect, monitor) => {
     return {
       connectDropTarget: connect.dropTarget(),
       isOver: monitor.isOver(),
-      consumable: monitor.getDropResult()
+      consumable: monitor.getDropResult(),
     };
   }
 )(Yali);

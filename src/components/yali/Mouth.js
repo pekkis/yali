@@ -1,16 +1,18 @@
 import React from "react";
-import styles from "./Mouth.pcss";
+import styles from "./Mouth.module.pcss";
 import PropTypes from "prop-types";
 
 const moods = {
-  "very-happy": require("../../assets/images/yali-very-happy.png"),
-  happy: require("../../assets/images/yali-happy.png"),
-  normal: require("../../assets/images/yali-normal.png"),
-  sad: require("../../assets/images/yali-sad.png"),
-  "very-sad": require("../../assets/images/yali-very-sad.png")
+  "very-happy": require("../../assets/images/yali-very-happy.png").default,
+  happy: require("../../assets/images/yali-happy.png").default,
+  normal: require("../../assets/images/yali-normal.png").default,
+  sad: require("../../assets/images/yali-sad.png").default,
+  "very-sad": require("../../assets/images/yali-very-sad.png").default,
 };
 
-const getMood = mood => {
+console.log(moods, "moods");
+
+const getMood = (mood) => {
   if (mood > 75) {
     return "very-happy";
   }
@@ -36,5 +38,5 @@ export default function Mouth({ mood }) {
 }
 
 Mouth.propTypes = {
-  mood: PropTypes.number.isRequired
+  mood: PropTypes.number.isRequired,
 };

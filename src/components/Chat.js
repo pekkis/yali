@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Chat.pcss";
+import styles from "./Chat.module.pcss";
 import ChatMessages from "./ChatMessages";
 import PropTypes from "prop-types";
 
@@ -15,5 +15,5 @@ export default function Chat({ yali, sendMessage, messages }) {
 Chat.propTypes = {
   yali: PropTypes.object.isRequired,
   sendMessage: PropTypes.func.isRequired,
-  messages: PropTypes.object.isRequired
+  messages: PropTypes.object.isRequired,
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./App.pcss";
+import styles from "./App.module.pcss";
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import IndexPage from "./containers/IndexPageContainer";

@@ -1,19 +1,19 @@
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Wrapped from "../IndexPage";
-import { consume } from "ducks/yali";
-import { sendMessage } from "ducks/chat";
+import { consume } from "../../ducks/yali";
+import { sendMessage } from "../../ducks/chat";
 
 export default connect(
-  state => ({
+  (state) => ({
     yali: state.yali,
-    messages: state.chat.get("messages")
+    messages: state.chat.get("messages"),
   }),
-  dispatch =>
+  (dispatch) =>
     bindActionCreators(
       {
         consume,
-        sendMessage
+        sendMessage,
       },
       dispatch
     )

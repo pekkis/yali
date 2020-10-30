@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Menu.pcss";
+import styles from "./Menu.module.pcss";
 import Consumables from "./Consumables";
 import PropTypes from "prop-types";
 
@@ -15,5 +15,5 @@ export default function Menu({ consume }) {
 }
 
 Menu.propTypes = {
-  consume: PropTypes.func.isRequired
+  consume: PropTypes.func.isRequired,
 };

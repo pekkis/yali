@@ -1,4 +1,12 @@
-import Random from 'random-js';
-const r = new Random(Random.engines.mt19937().autoSeed());
+import { Random } from "random-js";
 
-export default r;
+let crypto;
+if (typeof window !== "undefined") {
+  crypto = require("random-js").browserCrypto;
+} else {
+  crypto = require("random-js").nodeCrypto;
+}
+
+const random = new Random(crypto);
+
+export default random;

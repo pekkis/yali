@@ -1,13 +1,13 @@
 import React from "react";
 import { ItemTypes } from "../constants";
 import { DragSource } from "react-dnd";
-import styles from "./Consumable.pcss";
+import styles from "./Consumable.module.pcss";
 import cx from "classnames";
 
 function Consumable(props) {
   const { consumable, isDragging, connectDragSource } = props;
   const classes = cx(styles.root, {
-    [styles.isDragging]: isDragging
+    [styles.isDragging]: isDragging,
   });
 
   return connectDragSource(
@@ -26,17 +26,17 @@ export default DragSource(
   {
     beginDrag(props) {
       return {
-        type: props.type
+        type: props.type,
       };
     },
     endDrag(props) {
       props.consume(props.consumable);
-    }
+    },
   },
   (connect, monitor) => {
     return {
       connectDragSource: connect.dragSource(),
-      isDragging: monitor.isDragging()
+      isDragging: monitor.isDragging(),
     };
   }
 )(Consumable);

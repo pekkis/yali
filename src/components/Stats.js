@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Stats.pcss";
+import styles from "./Stats.module.pcss";
 import PropTypes from "prop-types";
 
 export default function Stats({ yali }) {
@@ -13,5 +13,5 @@ export default function Stats({ yali }) {
 }
 
 Stats.propTypes = {
-  yali: PropTypes.object.isRequired
+  yali: PropTypes.object.isRequired,
 };
