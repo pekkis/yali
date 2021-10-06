@@ -1,7 +1,5 @@
-import React from "react";
 import styles from "./ChatMessages.module.pcss";
 import ChatMessage from "./ChatMessage";
-import PropTypes from "prop-types";
 
 export default function ChatMessages({ messages }) {
   return (
@@ -12,7 +10,3 @@ export default function ChatMessages({ messages }) {
     </div>
   );
 }
-
-ChatMessages.propTypes = {
-  messages: PropTypes.object.isRequired,
-};

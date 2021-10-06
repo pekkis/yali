@@ -1,195 +1,218 @@
-// import { pipe, over, lensPath, append } from "ramda";
 import path from "path";
-import util from "util";
-
-import { any, pickBy, mapObjIndexed } from "ramda";
+import { any } from "ramda";
 import { merge } from "webpack-merge";
-
-// import MiniCssExtractPlugin from "mini-css-extract-plugin";
-
-import pkg from "./package.json";
-// import { Configuration } from "webpack-dev-server";
-
-// import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
-
-import * as webpack from "webpack";
-// import * as webpackDevServer from "webpack-dev-server";
-
+import { Configuration as WebpackConfiguration, DefinePlugin } from "webpack";
+import { Configuration as WebpackDevServerConfiguration } from "webpack-dev-server";
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import CaseSensitivePathsPlugin from "case-sensitive-paths-webpack-plugin";
 import WatchMissingNodeModulesPlugin from "react-dev-utils/WatchMissingNodeModulesPlugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
+
+import env from "env-var";
+
+import "dotenv/config";
+
+type Mode = "development" | "production";
+
+interface Configuration extends WebpackConfiguration {
+  devServer?: WebpackDevServerConfiguration;
+}
 
 const hasPrefix = (prefixes: string[], value: string): boolean => {
   return any((p) => value.startsWith(p), prefixes);
 };
 
-const getEnvironmentVariables = (
-  env: NodeJS.ProcessEnv,
-  prefix: string[],
-  whitelisted: string[]
-): { [key: string]: string } => {
-  // console.log(env, "env");
+const getEnvironmentVariables = (env: NodeJS.ProcessEnv, prefix: string[]) => {
+  const ret = Object.keys(env).reduce((a, key) => {
+    if (hasPrefix(prefix, key)) {
+      a[key] = JSON.stringify(env[key]);
+    }
+    return a;
+  }, {});
 
-  const picked = pickBy(
-    (v, k) =>
-      k === "NODE_ENV" || whitelisted.includes(v) || hasPrefix(prefix, v),
-    env
-  );
-
-  return mapObjIndexed((v) => {
-    return JSON.stringify(v);
-  }, picked);
+  return ret;
 };
 
-/*
-const getBundleAnalyzer = (mode: string) => {
+const getBundleAnalyzer = (mode: Mode) => {
   const options: BundleAnalyzerPlugin.Options =
     mode === "development"
-      ? {}
+      ? {
+          analyzerPort: 8890,
+          openAnalyzer: false
+        }
       : {
           analyzerMode: "disabled",
           generateStatsFile: true,
-          statsFilename: "stats.json",
+          statsFilename: "stats.json"
         };
 
   const p = new BundleAnalyzerPlugin(options);
   return p;
 };
-*/
 
-const mode =
+const getCssRule = (mode: Mode) => {
+  return {
+    test: /\.css$/,
+    include: [path.resolve("src"), path.resolve("node_modules")],
+    use: [
+      {
+        loader:
+          mode === "development"
+            ? require.resolve("style-loader")
+            : MiniCssExtractPlugin.loader
+      },
+      {
+        loader: require.resolve("css-loader")
+      }
+    ]
+  };
+};
+
+const getPcssRule = (mode: Mode) => {
+  return {
+    test: /\.pcss$/,
+    include: [path.resolve("src")],
+    use: [
+      {
+        loader:
+          mode === "development"
+            ? require.resolve("style-loader")
+            : MiniCssExtractPlugin.loader
+      },
+      {
+        loader: require.resolve("css-loader")
+      },
+      {
+        loader: require.resolve("postcss-loader")
+      }
+    ]
+  };
+};
+
+const mode: Mode =
   process.env.NODE_ENV === "development" ? "development" : "production";
 
-const c: webpack.Configuration = {
+const base: Configuration = {
   mode,
   optimization: {
     splitChunks: {
       chunks: "all",
-    },
+      minSize: 500
+    }
   },
-  devtool: false,
   output: {
     path: path.resolve("dist"),
-    publicPath: "/",
+    publicPath: "/"
   },
   devServer: {
-    port: 11000,
+    // host: "tussi.tunk.io", // if you have SSL problems in localhost, this helps
+    port: env.get("DEVSERVER_PORT").asPortNumber() || 8888,
     hot: true,
-    index: "index.html",
-    disableHostCheck: true,
     historyApiFallback: true,
+    allowedHosts: "all"
   },
   resolve: {
-    modules: [path.resolve("node_modules")],
-    extensions: [".js", ".ts", ".jsx", ".tsx", ".mjs"],
+    // modules: [path.resolve("node_modules")],
+    extensions: [".js", ".ts", ".jsx", ".tsx", ".mjs"]
   },
   context: path.resolve("src"),
-  entry: { client: "./client.js" },
   plugins: [
-    new webpack.DefinePlugin({
-      __DEVELOPMENT__: mode === "development",
-      __PRODUCTION__: mode === "production",
-      "process.env": getEnvironmentVariables(process.env, ["REACT_APP_"], []),
+    new DefinePlugin({
+      "process.env": getEnvironmentVariables(process.env, ["REACT_APP_"])
     }),
     new CopyWebpackPlugin({
-      patterns: [{ from: "assets/web", flatten: false }],
+      patterns: [{ from: "assets/web" }]
     }),
     new CaseSensitivePathsPlugin(),
-    new WatchMissingNodeModulesPlugin(path.resolve("node_modules")),
     new HtmlWebpackPlugin({
       template: "assets/index.html",
-      favicon: "assets/index.html",
+      favicon: "assets/favicon.png",
       chunksSortMode: "auto",
-      title: "MHM 2000",
+      title: "Training"
     }),
-    // getBundleAnalyzer(mode),
+    getBundleAnalyzer(mode)
   ],
   module: {
     rules: [
-      {
-        test: /\.p?css$/i,
-        use: [
-          require.resolve("style-loader"),
-          require.resolve("css-loader"),
-          {
-            loader: require.resolve("postcss-loader"),
-          },
-        ],
-      },
+      getCssRule(mode),
+      getPcssRule(mode),
       {
         test: /\.(png|jpg|gif|ico|svg)$/,
         include: [path.resolve("src")],
         use: [
           {
             loader: require.resolve("file-loader"),
-            options: { name: "[path][name]-[hash].[ext]", emitFile: true },
+            options: { name: "[path][name]-[hash].[ext]", emitFile: true }
           },
           {
             loader: require.resolve("image-webpack-loader"),
-            options: { disabled: mode !== "production" },
-          },
-        ],
+            options: { disabled: mode !== "production" }
+          }
+        ]
       },
       {
         test: /\.(js|jsx|ts|tsx)$/,
         use: [
           {
-            loader: require.resolve("babel-loader"),
-            options: {
-              babelrc: false,
-              presets: [
-                "@babel/preset-typescript",
-                [
-                  "@babel/preset-env",
-                  {
-                    debug: true,
-                    useBuiltIns: "usage",
-                    targets: {
-                      browsers: pkg.browserslist[mode],
-                    },
-                    modules: false,
-                    corejs: 3,
-                  },
-                ],
-                ["@babel/preset-react", { development: true }],
-                "@emotion/babel-preset-css-prop",
-              ],
-              plugins: [
-                "@babel/plugin-syntax-dynamic-import",
-                "@babel/plugin-proposal-class-properties",
-                "@babel/plugin-proposal-nullish-coalescing-operator",
-                "@babel/plugin-proposal-optional-chaining",
-              ],
-              cacheDirectory: true,
-            },
-          },
+            loader: require.resolve("babel-loader")
+          }
         ],
-        exclude: [path.resolve("node_modules")],
+        exclude: [path.resolve("node_modules")]
       },
       {
         test: /\.mjs$/,
         include: /node_modules/,
-        type: "javascript/auto",
-      },
-    ],
-  },
+        type: "javascript/auto"
+      }
+    ]
+  }
 };
 
-const p: webpack.Configuration = {
+const prod: Configuration = {
+  devtool: "source-map",
+  entry: {
+    client: ["./client.tsx"]
+  },
   output: {
-    filename: "[name].[contenthash].js",
+    filename: "[name].[contenthash].js"
   },
-  plugins: [new CleanWebpackPlugin()],
+  plugins: [
+    new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: "[name].[contenthash].css",
+      chunkFilename: "[name].[id].[contenthash].css"
+    })
+  ],
+  module: {
+    rules: []
+  }
 };
 
-const f = mode === "production" ? merge(c, p) : c;
+const dev: Configuration = {
+  target: "web",
+  devtool: "eval-source-map",
+  entry: {
+    client: ["./client.tsx"]
+  },
+  plugins: [
+    new WatchMissingNodeModulesPlugin(path.resolve("node_modules")),
+    new ReactRefreshWebpackPlugin()
+  ],
+  module: {
+    rules: []
+  },
+  resolve: {
+    alias: {
+      crypto: require.resolve("crypto-browserify"),
+      stream: require.resolve("stream-browserify")
+    }
+  }
+};
 
-console.log(util.inspect(f, false, 999));
+const final = mode === "production" ? merge(base, prod) : merge(base, dev);
 
-export default f;
-
-// process.exit();
-
-// export default withBundleAnalyzer;
+export default final;

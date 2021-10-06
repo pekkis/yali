@@ -1,5 +1,6 @@
 import React from "react";
 import Yali from "./Yali";
+
 import Menu from "./Menu";
 import styles from "./IndexPage.module.pcss";
 import Stats from "./Stats";

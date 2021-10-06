@@ -1,8 +1,9 @@
-import { List, Map } from "immutable";
 import r from "../services/r";
 import { TICK, CONSUME } from "./yali";
 import { getConsumationMessage, getLatteus } from "../services/yali";
 import parlayService from "../services/parlay";
+import produce from "immer";
+import { takeLast } from "ramda";
 
 export const SEND_MESSAGE = "SEND_MESSAGE";
 
@@ -11,30 +12,43 @@ export function sendMessage(sender, message) {
     type: SEND_MESSAGE,
     payload: {
       sender,
-      message,
-    },
+      message
+    }
   };
 }
 
-const defaultState = Map({
-  messages: List(),
-});
+type MessageType = {
+  sender: string;
+  message: string;
+};
 
-export default function chatReducer(state = defaultState, action) {
+type ChatState = {
+  messages: MessageType[];
+};
+
+const defaultState = {
+  messages: []
+};
+
+export default function chatReducer(state: ChatState = defaultState, action) {
   switch (action.type) {
     case SEND_MESSAGE:
       parlayService.speak(action.payload.message);
-      return state.update("messages", (messages) =>
-        messages.concat(action.payload)
-      );
+
+      return produce(state, (draft) => {
+        draft.messages.push(action.payload);
+      });
 
     case CONSUME: {
       const msg = {
         sender: "Yali",
-        message: getConsumationMessage(action.payload),
+        message: getConsumationMessage(action.payload)
       };
       parlayService.speak(msg.message);
-      return state.update("messages", (m) => m.concat(msg).takeLast(10));
+      return produce(state, (draft) => {
+        draft.messages.push(msg);
+        draft.messages = takeLast(10, draft.messages);
+      });
     }
 
     case TICK: {
@@ -45,10 +59,13 @@ export default function chatReducer(state = defaultState, action) {
 
       const msg = {
         sender: "Yali",
-        message: getLatteus(),
+        message: getLatteus()
       };
       parlayService.speak(msg.message);
-      return state.update("messages", (m) => m.concat(msg).takeLast(10));
+      return produce(state, (draft) => {
+        draft.messages.push(msg);
+        draft.messages = takeLast(10, draft.messages);
+      });
     }
     default:
       return state;

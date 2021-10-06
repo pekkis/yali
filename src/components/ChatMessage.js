@@ -1,9 +1,7 @@
-import React from "react";
+import { PureComponent } from "react";
 import styles from "./ChatMessage.module.pcss";
-import { List } from "immutable";
-import PropTypes from "prop-types";
 
-class ChatMessage extends React.PureComponent {
+class ChatMessage extends PureComponent {
   render() {
     const { message } = this.props;
     return (
@@ -13,9 +11,5 @@ class ChatMessage extends React.PureComponent {
     );
   }
 }
-
-ChatMessage.propTypes = {
-  message: PropTypes.object.isRequired,
-};
 
 export default ChatMessage;

@@ -8,7 +8,7 @@ export default function Consumables(props) {
 
   return (
     <section className={styles.root}>
-      {consumables.toList().map((consumable) => (
+      {Array.from(consumables.values()).map((consumable) => (
         <Consumable
           consume={consume}
           key={consumable.type}

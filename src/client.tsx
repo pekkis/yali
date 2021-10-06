@@ -24,10 +24,3 @@ function render(Component, rootElement, method = "render") {
 
 const rootElement = document.getElementById("app");
 render(Root, rootElement, initialState ? "hydrate" : "render");
-
-if (module.hot) {
-  module.hot.accept("./Root", () => {
-    const HotReloadedRoot = require("./Root").default;
-    render(HotReloadedRoot, rootElement, "render");
-  });
-}

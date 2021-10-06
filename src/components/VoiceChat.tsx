@@ -1,6 +1,9 @@
-import { FunctionComponent, useEffect, useRef } from "react";
+import { FunctionComponent, useEffect, useRef, useState } from "react";
 import React from "react";
 import styles from "./VoiceChat.module.pcss";
+import { useDispatch } from "react-redux";
+import consumables from "../services/consumables";
+import { FaMicrophoneAlt } from "react-icons/fa";
 
 type Props = {};
 
@@ -14,9 +17,9 @@ const useVoiceChat = (): SpeechRecognition | undefined => {
     const speechRecognitionList = new webkitSpeechGrammarList();
     speechRecognitionList.addFromString(grammar, 1);
     recognition.grammars = speechRecognitionList;
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    recognition.lang = "en-US";
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = "fi-FI";
     recognition.maxAlternatives = 1;
 
     ref.current = recognition;
@@ -28,31 +31,57 @@ const useVoiceChat = (): SpeechRecognition | undefined => {
 const VoiceChat: FunctionComponent<Props> = (props) => {
   const recognition = useVoiceChat();
 
+  const [listening, setListening] = useState<boolean>(false);
+
+  const dispatch = useDispatch();
+
   return (
     <div className={styles.root}>
       <button
+        disabled={listening}
         onClick={() => {
           if (!recognition) {
             return;
           }
-          console.log("START");
           recognition.start();
 
           recognition.onstart = function () {
-            console.log("start");
+            setListening(true);
           };
-          recognition.onresult = function (event) {
-            console.log("result", event);
+          recognition.onresult = function (event: {
+            results: SpeechRecognitionResultList;
+          }) {
+            const transcript = event.results.item(0).item(0).transcript;
+
+            console.log("transcript", transcript);
+
+            const match = /^syö (.*)$/.exec(transcript);
+
+            if (match) {
+              const consumable = Array.from(consumables.values()).find((c) => {
+                return c.text.toLowerCase() === match[1].toLowerCase();
+              });
+              if (consumable) {
+                dispatch({
+                  type: "CONSUME",
+                  payload: consumable
+                });
+              }
+            }
+
+            console.log(match, "match");
           };
           recognition.onerror = function (event) {
             console.log("error", event);
           };
           recognition.onend = function () {
+            setListening(false);
             console.log("end");
           };
         }}
       >
-        hilpata
+        <FaMicrophoneAlt />
+        käskytä!
       </button>
     </div>
   );

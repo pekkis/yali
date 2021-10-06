@@ -18,5 +18,5 @@ export default function Chat({ yali, sendMessage, messages }) {
 Chat.propTypes = {
   yali: PropTypes.object.isRequired,
   sendMessage: PropTypes.func.isRequired,
-  messages: PropTypes.object.isRequired,
+  messages: PropTypes.object.isRequired
 };

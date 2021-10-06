@@ -7,13 +7,13 @@ import { sendMessage } from "../../ducks/chat";
 export default connect(
   (state) => ({
     yali: state.yali,
-    messages: state.chat.get("messages"),
+    messages: state.chat.messages
   }),
   (dispatch) =>
     bindActionCreators(
       {
         consume,
-        sendMessage,
+        sendMessage
       },
       dispatch
     )
