@@ -117,7 +117,11 @@ const base: Configuration = {
   },
   resolve: {
     // modules: [path.resolve("node_modules")],
-    extensions: [".js", ".ts", ".jsx", ".tsx", ".mjs"]
+    extensions: [".js", ".ts", ".jsx", ".tsx", ".mjs"],
+    alias: {
+      crypto: require.resolve("crypto-browserify"),
+      stream: require.resolve("stream-browserify")
+    }
   },
   context: path.resolve("src"),
   plugins: [
@@ -204,12 +208,6 @@ const dev: Configuration = {
   ],
   module: {
     rules: []
-  },
-  resolve: {
-    alias: {
-      crypto: require.resolve("crypto-browserify"),
-      stream: require.resolve("stream-browserify")
-    }
   }
 };
 
