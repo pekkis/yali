@@ -1,9 +1,10 @@
 import { VFC } from "react";
+import { YaliState } from "../../ducks/yali";
 import Mouth from "./Mouth";
 
 type Props = {
   mood: string;
-  yali: any;
+  yali: YaliState;
 };
 
 const Yali: VFC<Props> = (props) => {
@@ -37,7 +38,7 @@ const Yali: VFC<Props> = (props) => {
         fill="#fff"
       />
 
-      <Mouth mood={yali.get("mood")} />
+      <Mouth mood={yali.mood} />
 
       <circle
         cx="110.4"

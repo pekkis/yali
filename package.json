@@ -1,7 +1,7 @@
 {
-  "name": "@dr-kobros/hardcore-react-training",
-  "version": "5.0.0",
-  "description": "A training / starter project for my Hardcore React Training course",
+  "name": "yali",
+  "version": "3.0.0",
+  "description": "Yali",
   "main": "src",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --progress",
@@ -11,16 +11,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/pekkis/hardcore-react-training"
+    "url": "https://github.com/pekkis/yali"
   },
-  "keywords": [
-    "React",
-    "example",
-    "starter",
-    "boilerplate",
-    "broilerplate",
-    "training"
-  ],
+  "keywords": [],
   "author": "Pekkis",
   "license": "MIT",
   "jest": {
@@ -52,6 +45,8 @@
     "@reduxjs/toolkit": "^1.6.1",
     "@theme-ui/css": "^0.11.2",
     "@theme-ui/presets": "^0.11.2",
+    "@xstate/immer": "^0.2.0",
+    "@xstate/react": "^1.6.1",
     "apollo-client": "^2.6.10",
     "axios": "^0.21.4",
     "clsx": "^1.1.1",
@@ -92,6 +87,7 @@
     "three": "^0.132.2",
     "troika-three-text": "^0.42.0",
     "uuid": "^8.3.0",
+    "xstate": "^4.25.0",
     "yup": "^0.32.9",
     "zustand": "^3.5.10"
   },
@@ -136,6 +132,8 @@
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^9.0.1",
     "core-js": "^3.17.3",
+    "critters": "^0.0.10",
+    "critters-webpack-plugin": "^2.5.0",
     "cross-env": "^7.0.2",
     "crypto-browserify": "^3.12.0",
     "css-loader": "^6.2.0",
@@ -178,6 +176,7 @@
     "webpack-bundle-analyzer": "^4.4.0",
     "webpack-cli": "^4.8.0",
     "webpack-dev-server": "^4.2.0",
+    "webpack-log": "^3.0.2",
     "webpack-merge": "^5.8.0"
   },
   "browserslist": {

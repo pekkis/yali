@@ -24,16 +24,12 @@ const getSynth = () => {
   });
 };
 
-const speak = (utterance) => {
+export const speak = (utterance: string): void => {
   getSynth().then((synth) => {
-    var msg = new SpeechSynthesisUtterance(utterance);
+    const msg = new SpeechSynthesisUtterance(utterance);
     msg.lang = "fi";
     msg.pitch = 0;
     msg.voice = voice;
     synth.speak(msg);
   });
-};
-
-export default {
-  speak
 };

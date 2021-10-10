@@ -1,13 +1,18 @@
 import r from "../services/r";
-import { TICK, CONSUME } from "./yali";
+import { TICK, CONSUME, TickAction, ConsumeAction } from "./yali";
 import { getConsumationMessage, getLatteus } from "../services/yali";
-import parlayService from "../services/parlay";
+import { speak } from "../services/parlay";
 import produce from "immer";
 import { takeLast } from "ramda";
 
 export const SEND_MESSAGE = "SEND_MESSAGE";
 
-export function sendMessage(sender, message) {
+type MessageAction = {
+  type: typeof SEND_MESSAGE;
+  payload: MessageType;
+};
+
+export const sendMessage = (sender: string, message: string): MessageAction => {
   return {
     type: SEND_MESSAGE,
     payload: {
@@ -15,14 +20,14 @@ export function sendMessage(sender, message) {
       message
     }
   };
-}
+};
 
 type MessageType = {
   sender: string;
   message: string;
 };
 
-type ChatState = {
+export type ChatState = {
   messages: MessageType[];
 };
 
@@ -30,10 +35,15 @@ const defaultState = {
   messages: []
 };
 
-export default function chatReducer(state: ChatState = defaultState, action) {
+type Actions = TickAction | ConsumeAction | MessageAction;
+
+const chatReducer = (
+  state: ChatState = defaultState,
+  action: Actions
+): ChatState => {
   switch (action.type) {
     case SEND_MESSAGE:
-      parlayService.speak(action.payload.message);
+      speak(action.payload.message);
 
       return produce(state, (draft) => {
         draft.messages.push(action.payload);
@@ -44,7 +54,7 @@ export default function chatReducer(state: ChatState = defaultState, action) {
         sender: "Yali",
         message: getConsumationMessage(action.payload)
       };
-      parlayService.speak(msg.message);
+      speak(msg.message);
       return produce(state, (draft) => {
         draft.messages.push(msg);
         draft.messages = takeLast(10, draft.messages);
@@ -61,7 +71,7 @@ export default function chatReducer(state: ChatState = defaultState, action) {
         sender: "Yali",
         message: getLatteus()
       };
-      parlayService.speak(msg.message);
+      speak(msg.message);
       return produce(state, (draft) => {
         draft.messages.push(msg);
         draft.messages = takeLast(10, draft.messages);
@@ -70,4 +80,6 @@ export default function chatReducer(state: ChatState = defaultState, action) {
     default:
       return state;
   }
-}
+};
+
+export default chatReducer;

@@ -1,16 +1,19 @@
 import r from "./r";
+import { YaliState } from "../ducks/yali";
+import { ConsumableType } from "./consumables";
 
 export const ITEM_TYPES = {
   CONSUMABLE: "consumable"
 };
 
-export function calculateMood(yali) {
-  const alcohol = yali.get("alcohol");
-  const fullness = yali.get("fullness");
-  return -100 + alcohol + fullness;
-}
+export const calculateMood = (yali: YaliState): void => {
+  yali.fullness = Math.max(yali.fullness, 0);
+  yali.hydration = Math.max(yali.hydration, 0);
 
-export function getConsumationMessage(consumable) {
+  yali.mood = -100 + yali.hydration + yali.fullness;
+};
+
+export const getConsumationMessage = (consumable: ConsumableType): string => {
   const adjectives = {
     positive: [
       "maukas",
@@ -38,9 +41,9 @@ export function getConsumationMessage(consumable) {
   const list = consumable.positive ? adjectives.positive : adjectives.negative;
 
   return `Olipas ${r.pick(list)} ${consumable.text.toLowerCase()}!`;
-}
+};
 
-export function getLatteus() {
+export const getLatteus = (): string => {
   const latteus = [
     "Saisipa jotain lipaistavaa!",
     "Saisipa jotain lussutettavaa!",
@@ -50,4 +53,4 @@ export function getLatteus() {
   ];
 
   return r.pick(latteus);
-}
+};

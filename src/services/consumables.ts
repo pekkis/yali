@@ -1,9 +1,11 @@
-type ConsumableType = {
+import { YaliState } from "../ducks/yali";
+
+export type ConsumableType = {
   src: string;
   type: string;
   text: string;
   positive: boolean;
-  consume: (yali: any) => any;
+  consume: (yali: YaliState) => void;
 };
 
 const consumables = new Map<string, ConsumableType>();
@@ -13,8 +15,10 @@ consumables.set("beer", {
   type: "limu",
   text: "Limu",
   positive: true,
-  consume: (yali) =>
-    yali.update("fullness", (f) => f + 1).update("alcohol", (a) => a + 10)
+  consume: (yali) => {
+    yali.fullness = yali.fullness + 1;
+    yali.hydration = yali.hydration + 10;
+  }
 });
 
 consumables.set("poop", {
@@ -22,8 +26,10 @@ consumables.set("poop", {
   type: "puuppa",
   text: "Puuppa",
   positive: true,
-  consume: (yali) =>
-    yali.update("fullness", (f) => f + 100).update("alcohol", (a) => a + 30)
+  consume: (yali) => {
+    yali.fullness = yali.fullness + 100;
+    yali.hydration = yali.hydration + 30;
+  }
 });
 
 consumables.set("maito", {
@@ -31,8 +37,10 @@ consumables.set("maito", {
   type: "maito",
   text: "Maito",
   positive: true,
-  consume: (yali) =>
-    yali.update("fullness", (f) => f + 50).update("alcohol", (a) => a + 50)
+  consume: (yali) => {
+    yali.fullness = yali.fullness + 50;
+    yali.hydration = yali.hydration + 50;
+  }
 });
 
 consumables.set("keksi", {
@@ -40,22 +48,28 @@ consumables.set("keksi", {
   type: "keksi",
   text: "Keksula",
   positive: false,
-  consume: (yali) =>
-    yali.update("fullness", (f) => f - 200).update("alcohol", (a) => a - 200)
+  consume: (yali) => {
+    yali.fullness = yali.fullness - 200;
+    yali.hydration = yali.hydration - 200;
+  }
 });
 consumables.set("chickenleg", {
   src: require("../assets/images/chickenleg.png").default,
   type: "chickenleg",
   text: "Kanankoipi",
   positive: true,
-  consume: (yali) => yali.update("fullness", (f) => f + 15)
+  consume: (yali) => {
+    yali.fullness = yali.fullness + 15;
+  }
 });
 consumables.set("magnum", {
   src: require("../assets/images/magnum.png").default,
   type: "magnum",
   text: "Valkoinen Magnum",
   positive: true,
-  consume: (yali) => yali.update("fullness", (f) => f + 33)
+  consume: (yali) => {
+    yali.fullness = yali.fullness + 33;
+  }
 });
 
 consumables.set("ohrapuuro", {
@@ -63,15 +77,19 @@ consumables.set("ohrapuuro", {
   type: "ohrapuuro",
   text: "Ohrapuuro",
   positive: false,
-  consume: (yali) => yali.update("fullness", (f) => f - 25)
+  consume: (yali) => {
+    yali.fullness = yali.fullness - 25;
+  }
 });
 consumables.set("preschooler", {
   src: require("../assets/images/esikoululainen.jpg").default,
   type: "esikoululainen",
   text: "Esikoululainen",
   positive: true,
-  consume: (yali) =>
-    yali.update("fullness", (f) => f + 20).update("alcohol", (a) => a + 20)
+  consume: (yali) => {
+    yali.fullness = yali.fullness + 20;
+    yali.hydration = yali.hydration + 20;
+  }
 });
 
 export default consumables;

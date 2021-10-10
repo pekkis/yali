@@ -1,6 +1,3 @@
-// import transit from "transit-immutable-js";
-
-export function getInitialState()
-{
+export function getInitialState() {
   return undefined;
 }

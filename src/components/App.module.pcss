@@ -1,12 +1,10 @@
 $font-size: 16px;
 
 .root {
-
 }
 
 :global {
-
-  @import '../../node_modules/normalize.css/normalize.css';
+  @import "../../node_modules/normalize.css/normalize.css";
 
   * {
     box-sizing: border-box;
@@ -20,11 +18,17 @@ $font-size: 16px;
     font-family: "Comic Sans MS";
   }
 
-  button, input {
-    padding: .5rem;
+  button,
+  input {
+    padding: 0.5rem;
   }
 
   [disabled] {
-    opacity: .5;
+    opacity: 0.5;
+  }
+
+  .yali-loading {
+    border: 5px dotted rgb(255, 0, 0);
+    padding: 1em;
   }
 }
